@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive data science portfolio showcasing predictive analysis and risk management models applied to student social media usage and mental health impacts.">
+    <title>Student Social Media & Mental Health: Predictive Analytics & Risk Management Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Vanilla CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar or Header Panel -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">📊</span>
+                <div class="logo-text">
+                    <h1>Digital Well-being Analytics</h1>
+                    <p class="subtitle">Predictive Analysis & Risk Management Portfolio Project</p>
+                </div>
+            </div>
+            <div class="author-badge">
+                <div class="author-info">
+                    <span class="author-name">Data Science Candidate</span>
+                    <span class="author-role">Predictive Analytics & Risk Specialist</span>
+                </div>
+                <div class="avatar">DS</div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- Hero Description Section -->
+            <section class="hero-card full-width" id="intro-section">
+                <div class="hero-content">
+                    <h2>Student Social Media & Mental Health Analysis</h2>
+                    <p>
+                        This end-to-end data science project explores the impact of screen time, digital unlocks, study habits, and sleep on student mental health. 
+                        To demonstrate core math proficiency, the machine learning models—<strong>OLS Linear Regression</strong> (predicting Mental Health Score) and 
+                        a <strong>Gini Impurity Decision Tree Classifier</strong> (predicting Stress Risk)—were implemented <strong>from scratch in Python</strong> 
+                        and deployed directly in this interactive dashboard.
+                    </p>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat-item">
+                        <span class="stat-value" id="stat-total-records">5,000</span>
+                        <span class="stat-label">Dataset Records</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <span class="stat-value" id="stat-avg-screentime">4.8h</span>
+                        <span class="stat-label">Avg Screen Time</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <span class="stat-value" id="stat-avg-sleep">6.8h</span>
+                        <span class="stat-label">Avg Sleep Hours</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <span class="stat-value text-danger" id="stat-risk-ratio">34.2%</span>
+                        <span class="stat-label">High Risk Ratio</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section 1: Exploratory Analysis -->
+            <section class="card half-width" id="chart-card-platform">
+                <div class="card-header">
+                    <h3>Most Used Social Platforms</h3>
+                    <p class="card-subtitle">Distribution of dominant platforms among students</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="platformChart"></canvas>
+                </div>
+            </section>
+
+            <section class="card half-width" id="chart-card-stress-screentime">
+                <div class="card-header">
+                    <h3>Average Screen Time by Stress Level</h3>
+                    <p class="card-subtitle">Showing direct link between daily hours and stress severity</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="stressScreenChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Chart Section 2: Correlation and Scatter -->
+            <section class="card half-width" id="chart-card-scatter">
+                <div class="card-header">
+                    <h3>Screen Time vs. Mental Health Score</h3>
+                    <p class="card-subtitle">Scatter distribution of selected samples with stress-level highlights</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="scatterChart"></canvas>
+                </div>
+            </section>
+
+            <section class="card half-width" id="chart-card-correlation">
+                <div class="card-header">
+                    <h3>Feature Correlation Matrix</h3>
+                    <p class="card-subtitle">Pearson correlation coefficients among key metrics</p>
+                </div>
+                <div class="correlation-grid-container" id="correlation-matrix-grid">
+                    <!-- Loaded dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Model Sandbox & Predictive Tool -->
+            <section class="card full-width" id="predictive-sandbox">
+                <div class="card-header border-bottom">
+                    <span class="badge badge-accent">Interactive Engine</span>
+                    <h3>Predictive Analysis & Risk Assessment Sandbox</h3>
+                    <p class="card-subtitle">Input personalized metrics to evaluate mental health score and stress risk using the custom-trained models.</p>
+                </div>
+                
+                <div class="sandbox-layout">
+                    <!-- Form Controls -->
+                    <form class="sandbox-form" id="risk-form" onsubmit="return false;">
+                        <div class="form-grid">
+                            <!-- Numeric Fields -->
+                            <div class="form-group">
+                                <label for="input-age">Age (years)</label>
+                                <input type="number" id="input-age" min="15" max="30" value="21" required>
+                                <span class="input-desc">Range: 15 - 30</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-screentime">Daily Social Media (hours)</label>
+                                <input type="number" id="input-screentime" min="0" max="15" step="0.1" value="4.5" required>
+                                <span class="input-desc">Avg: 4.8h</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-unlocks">Daily Unlocks</label>
+                                <input type="number" id="input-unlocks" min="10" max="400" value="120" required>
+                                <span class="input-desc">Avg: 130 unlocks</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-study">Study Hours (daily)</label>
+                                <input type="number" id="input-study" min="0" max="12" step="0.1" value="4.0" required>
+                                <span class="input-desc">Avg: 3.8h</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-physical">Physical Activity (hours)</label>
+                                <input type="number" id="input-physical" min="0" max="6" step="0.1" value="1.5" required>
+                                <span class="input-desc">Avg: 1.6h</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-sleep">Sleep Hours (nightly)</label>
+                                <input type="number" id="input-sleep" min="3" max="12" step="0.1" value="7.0" required>
+                                <span class="input-desc">Avg: 6.8h</span>
+                            </div>
+
+                            <!-- Categorical Fields -->
+                            <div class="form-group">
+                                <label for="input-gender">Gender</label>
+                                <select id="input-gender" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-academic">Academic Level</label>
+                                <select id="input-academic" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-platform">Most Used Platform</label>
+                                <select id="input-platform" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-purpose">Primary Purpose</label>
+                                <select id="input-purpose" required></select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Outputs display -->
+                    <div class="sandbox-results">
+                        <div class="results-header">
+                            <h4>Risk & Score Output</h4>
+                            <span class="running-indicator">Live Inference Active</span>
+                        </div>
+                        
+                        <!-- Mental Health Score Gauge -->
+                        <div class="score-display">
+                            <span class="result-label">Predicted Mental Health Score</span>
+                            <div class="score-numeric-container">
+                                <span class="score-value" id="pred-mh-score">7.2</span>
+                                <span class="score-max">/ 10</span>
+                            </div>
+                            <div class="score-bar-bg">
+                                <div class="score-bar-fill" id="pred-mh-bar" style="width: 72%;"></div>
+                            </div>
+                            <span class="score-comment" id="pred-mh-comment">Healthy baseline score.</span>
+                        </div>
+
+                        <!-- Stress Risk Output -->
+                        <div class="stress-display">
+                            <span class="result-label">Predicted Stress level</span>
+                            <div class="stress-badge" id="pred-stress-badge">Medium</div>
+                            <div class="risk-meter-container">
+                                <div class="risk-meter-needle" id="risk-needle" style="left: 50%;"></div>
+                                <div class="risk-meter-gradient"></div>
+                                <div class="risk-meter-labels">
+                                    <span>Low</span>
+                                    <span>Medium</span>
+                                    <span>High</span>
+                                    <span>Very High</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-full" id="btn-generate-report">
+                            📋 Generate Risk Mitigation Protocol
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Management Report section -->
+            <section class="card full-width hidden print-visible" id="risk-report-card">
+                <div class="report-actions no-print">
+                    <button class="btn btn-secondary" id="btn-close-report">Back to Dashboard</button>
+                    <button class="btn btn-primary" onclick="window.print()">🖨️ Export PDF / Print Report</button>
+                </div>
+                
+                <div class="report-wrapper" id="printable-report">
+                    <div class="report-banner">
+                        <div class="banner-title">
+                            <h2>PERSONALIZED DIGITAL WELL-BEING REPORT</h2>
+                            <p>Student Risk Profiling & Behavioural Mitigation Protocols</p>
+                        </div>
+                        <div class="report-metadata">
+                            <div><strong>Date:</strong> <span id="report-date">June 2026</span></div>
+                            <div><strong>Reference:</strong> RMP-DS-2026</div>
+                        </div>
+                    </div>
+
+                    <div class="report-section-grid">
+                        <div class="report-column">
+                            <h4 class="section-title">1. Risk Level Classification</h4>
+                            <div class="report-kpi-block">
+                                <div class="kpi-score">
+                                    <div class="kpi-num" id="rep-mh-score">7.2</div>
+                                    <div class="kpi-name">Mental Health Score</div>
+                                </div>
+                                <div class="kpi-stress">
+                                    <div class="kpi-val" id="rep-stress-level">Medium</div>
+                                    <div class="kpi-name">Stress Level Classification</div>
+                                </div>
+                            </div>
+                            <p class="report-text" id="report-summary-text">
+                                The predictive analysis engine classifies this profile as having a moderate overall risk to digital wellness. 
+                                High usage hours and low physical exercise are primary risk factors.
+                            </p>
+                        </div>
+
+                        <div class="report-column">
+                            <h4 class="section-title">2. Primary Risk Drivers Identified</h4>
+                            <ul class="risk-driver-list" id="report-risk-drivers">
+                                <!-- Loaded dynamically based on values -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="report-full-section">
+                        <h4 class="section-title">3. Actionable Behavioural Risk Mitigation Protocols</h4>
+                        <div class="mitigation-protocols-grid" id="report-mitigations">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="report-footer">
+                        <p class="disclaimer">
+                            <strong>Note on Methodology:</strong> This report is generated using an Ordinary Least Squares (OLS) Regression and Gini Decision Tree Classifier 
+                            implemented from scratch in Python and serialized for client-side execution. Mappings are trained on a cohort of 5,000 student logs.
+                        </p>
+                        <p class="sign-off">Authorized Wellness Engine Analyst: DS Portfolio Project</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dataset Explorer -->
+            <section class="card full-width" id="dataset-explorer">
+                <div class="card-header border-bottom flex-between">
+                    <div>
+                        <h3>Cohorts Dataset Explorer</h3>
+                        <p class="card-subtitle">Inspecting sample student logs (Loaded directly from raw CSV data)</p>
+                    </div>
+                    <div class="explorer-filters">
+                        <select id="filter-platform">
+                            <option value="">All Platforms</option>
+                        </select>
+                        <select id="filter-gender">
+                            <option value="">All Genders</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="data-sample-table">
+                        <thead>
+                            <tr>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Platform</th>
+                                <th>Usage (Hrs)</th>
+                                <th>Daily Unlocks</th>
+                                <th>Study Hours</th>
+                                <th>Sleep (Hrs)</th>
+                                <th>Stress Level</th>
+                                <th>MH Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer flex-between">
+                    <span id="table-pagination-info">Showing 1-10 of 5,000 records</span>
+                    <div class="pagination-buttons">
+                        <button class="btn btn-sm btn-secondary" id="btn-prev-page">Previous</button>
+                        <button class="btn btn-sm btn-secondary" id="btn-next-page">Next</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <!-- App Footer -->
+        <footer class="app-footer-bar">
+            <p>&copy; 2026 Data Science Predictive Analysis & Risk Management Portfolio. All rights reserved.</p>
+            <p>Designed for HR Talent Acquisition Teams & Hiring Managers.</p>
+        </footer>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
